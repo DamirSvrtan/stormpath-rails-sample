@@ -18,8 +18,8 @@ class GroupsController < ApplicationController
   def update
     @directory = Stormpath::Rails::Client.client.directories.get params[:directory_href]
     @group = @directory.groups.get params[:href]
-    @group.custom_data.put("view_classified_info", params[:view_classified_info])
-    @group.custom_data.put("delete_others", params[:delete_others])
+    @group.custom_data["view_classified_info"] = params[:view_classified_info]
+    @group.custom_data["delete_others"] = params[:delete_others]
     @group.custom_data.save
     redirect_to action: :show, directory_href: params[:directory_href], href: params[:href]
   end

@@ -20,7 +20,7 @@ module ApplicationHelper
   def can_delete_others?
     if current_user
       current_user.stormpath_account.groups.any? do |group|
-        group.custom_data.get("delete_others") == "true"
+        group.custom_data["delete_others"] == "true"
       end
     end
   end

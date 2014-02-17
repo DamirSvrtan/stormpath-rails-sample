@@ -1,0 +1,29 @@
+<h1>User List</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Given Name</th>
+      <th>Surname</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.email %></td>
+      <td><%= user.given_name %></td>
+      <td><%= user.surname %></td>
+      <td>
+        <%= button_to 'Edit', edit_user_path(user), :class => 'btn', :method => :get %>
+      </td>
+      <td>
+        <%= button_to 'Remove', user, data: {confirm: 'Are you sure?'}, :method => :delete, :class => 'btn', disabled: !can_delete_others? %>
+      </td>
+      <td>
+        <%= button_to 'Manage Group Memberships', user_group_memberships_path(user.id),  :method => :get, :class => 'btn',  disabled: not_admin? %>
+      </td> 
+    </tr>
+  <% end %>
+  </tbody>
+</table>

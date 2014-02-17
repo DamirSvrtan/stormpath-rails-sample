@@ -1,0 +1,49 @@
+<h1><%= @group.name %></h1>
+
+<h4>Group Accounts</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @group_accounts.each do |account| %>
+    <tr>
+      <td><%= account.username %></td>
+      <td><%= account.email %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<h4>Custom Data Permissions</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Can view classified information</th>
+      <th>Can delete others</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= can_view_classified_info %></td>
+      <td><%= can_delete_others %></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4> Update Permissions </h4>
+
+<%= form_tag :groups, method: :put  do %>
+  <%= label_tag "View Classified Info" %>
+  <%= text_field_tag :view_classified_info, @group_custom_data.get("view_classified_info") %>
+  <%= label_tag "Delete Others" %>
+  <%= text_field_tag :delete_others, @group_custom_data.get("delete_others") %>
+  <%= hidden_field_tag :directory_href, @directory.href %>
+  <%= hidden_field_tag :href, @group.href %>
+  <br/>
+  <%= submit_tag "Change Permissions" %>
+<% end %>

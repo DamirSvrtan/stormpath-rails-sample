@@ -1,0 +1,49 @@
+<h1>Account store</h1>
+
+<h4> My Account Store Mappings </h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Account Store Type</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @account_stores.each do |account_store| %>
+    <tr>
+      <td><%= link_to_account_store(account_store) %></td>
+      <td><%= account_store_type(account_store) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<h4> Manage Account Store Mapping</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Toggle Mappings</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @directories.each do |directory| %>
+    <tr>
+      <td><%= directory.name %></td>
+      <td>
+        <% if @account_stores.include? directory %>
+          <%= link_to "Delete", account_store_mappings_path(href: directory.href), method: :delete %>
+        <% else %>
+          <%= link_to "Add", account_store_mappings_path(href: directory.href), method: :post %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<h4> Create new directory </h4>
+<%= form_tag(:account_store) do %>
+  <%= text_field_tag :directory %>
+  <%= hidden_field_tag :account_store_type, :directory %>
+  <br/>
+  <%= submit_tag "Create Directory" %>
+<% end %>

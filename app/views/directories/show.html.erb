@@ -1,0 +1,27 @@
+<h1><%= @directory.name %></h1>
+
+<h4>Directory Groups</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @directory_groups.each do |group| %>
+    <tr>
+      <td><%= link_to group.name, groups_path(directory_href: @directory.href, href: group.href) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<h4> Create New Group For Directory </h4>
+
+<%= form_tag(:groups) do %>
+  <%= text_field_tag :group_name %>
+  <%= hidden_field_tag :directory_href, @directory.href %>
+  <br/>
+  <%= submit_tag "Create Group" %>
+<% end %>

@@ -1,0 +1,24 @@
+<h1><%= "#{@user.username}" %></h1>
+
+<h4> Users Groups </h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Group Name</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @application_groups.each do |application_group| %>
+    <tr>
+      <td><%= application_group.name %></td>
+      <td>
+        <% if @users_groups.include? application_group %>
+          <%= link_to "Remove", user_group_memberships_path(@user.id, group_href: application_group.href), method: :delete %>
+        <% else %>
+          <%= link_to "Add", user_group_memberships_path(@user.id, group_href: application_group.href), method: :post %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -115,9 +115,6 @@ GEM
       activesupport (>= 3.0)
       sprockets (~> 2.8)
     sqlite3 (1.3.8)
-    stormpath-rails (1.0.0.beta.4)
-      activesupport
-      stormpath-sdk (= 1.0.0.beta.5)
     stormpath-sdk (1.0.0.beta.5)
       activesupport (>= 3.2.8)
       httpclient (>= 2.2.5)
@@ -150,5 +147,5 @@ DEPENDENCIES
   rspec-rails (~> 2.0)
   sass-rails
   sqlite3
-  stormpath-rails (= 1.0.0.beta.4)
+  stormpath-sdk (= 1.0.0.beta.5)
   uglifier (>= 1.0.3)

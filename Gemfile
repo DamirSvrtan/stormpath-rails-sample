@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'stormpath-rails', '1.0.0.beta.4'
+gem 'stormpath-sdk', '1.0.0.beta.5'
 
 gem 'rails', '4'
 gem 'sqlite3'

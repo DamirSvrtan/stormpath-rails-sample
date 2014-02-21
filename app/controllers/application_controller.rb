@@ -2,10 +2,9 @@ require 'pry'
 require 'pry-debugger'
 
 class ApplicationController < ActionController::Base
+  protect_from_forgery
 
   ADMIN_GROUP_NAME = "Admins"
-
-  protect_from_forgery
 
   helper_method :logged_in?, :current_user, :is_admin?, :not_admin?
 

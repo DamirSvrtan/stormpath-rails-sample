@@ -1,45 +1,39 @@
 <h1>Create Account</h1>
 
-<%= form_for @user, :html => { :class => "form-horizontal" } do |f| %>
+<%= form_tag users_path :html => { :class => "form-horizontal" } do |f| %>
   <div class="control-group">
     <%= label_tag :given_name, nil, class: 'control-label' %>
     <div class="controls">
-      <%= f.text_field :given_name, :placeholder => 'Given Name' %>
+      <%= text_field_tag :given_name %>
     </div>
   </div>
   <div class="control-group">
     <%= label_tag :surname, nil, class: 'control-label' %>
     <div class="controls">
-      <%= f.text_field :surname, :placeholder => 'Surname' %>
+      <%= text_field_tag :surname %>
     </div>
   </div>
   <div class="control-group">
     <%= label_tag :email, nil, class: 'control-label' %>
     <div class="controls">
-      <%= f.text_field :email, :placeholder => 'Email' %>
+      <%= text_field_tag :email %>
     </div>
   </div>
   <div class="control-group">
     <%= label_tag :username, nil, class: 'control-label' %>
     <div class="controls">
-      <%= f.text_field :username, :placeholder => 'Username' %>
-    </div>
-  </div>
-  <div class="control-group">
-    <%= label_tag :css_background, nil, class: 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :css_background, :placeholder => 'CSS Background Color' %>
+      <%= text_field_tag :username %>
     </div>
   </div>
   <div class="control-group">
     <%= label_tag :password, nil, class: 'control-label' %>
     <div class="controls">
-      <%= f.password_field :password, :placeholder => 'Password' %>
+      <%= password_field_tag :password %>
     </div>
   </div>
   <div class="control-group">
     <div class="controls">
-      <%= f.submit 'Save', :class => 'btn btn-primary' %>
+      <%= submit_tag 'Save', :class => 'btn btn-primary' %>
     </div>
   </div>
 <% end %>

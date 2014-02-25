@@ -43,7 +43,7 @@ class PasswordResetTokensController < ApplicationController
 
   private
 
-  def set_token
-    @token = params[:sptoken]
-  end
+    def set_token
+      @token = params[:sptoken]
+    end
 end

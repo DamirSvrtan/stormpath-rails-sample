@@ -8,6 +8,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  [:favorite_color].each do |attribute|
+    define_method attribute do
+      self.stormpath_account.custom_data[attribute]
+    end
+  end
+
   def stormpath_account
     StormpathConfig.application.accounts.get stormpath_url
   end

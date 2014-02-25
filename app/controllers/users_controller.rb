@@ -13,11 +13,11 @@ class UsersController < ApplicationController
 
   def create
     stormpath_account = StormpathConfig.application.accounts.create({
-      given_name: params[:given_name],
-      surname: params[:surname],
-      email: params[:email],
-      username: params[:username],
-      password: params[:password]
+      given_name: params[:user][:given_name],
+      surname: params[:user][:surname],
+      email: params[:user][:email],
+      username: params[:user][:username],
+      password: params[:user][:password]
     })
 
     @user = User.new({ stormpath_url: stormpath_account.href})
@@ -35,19 +35,24 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
+    begin
+      @user = User.find(params[:id])
 
-    account = @user.stormpath_account
-    account.given_name = params[:given_name]
-    account.surname = params[:surname]
-    account.email = params[:email]
-    account.custom_data[:favorite_color] = params[:custom_data][:favorite_color]
-    account.save
-
-    flash[:message] = "The account has been updated successfully."
-    redirect_to users_path
-
-    render :edit
+      account = @user.stormpath_account
+      account.given_name = params[:user][:given_name]
+      account.surname = params[:user][:surname]
+      account.username = params[:user][:username]
+      account.email = params[:user][:email]
+      account.custom_data[:favorite_color] = params[:user][:favorite_color]
+      account.save
+      
+      flash[:message] = "The account has been updated successfully."
+      redirect_to users_path
+    rescue Stormpath::Error => e
+      flash[:message] = e.message
+      @user_groups = @user.stormpath_account.groups
+      render :edit
+    end
   end
 
   def destroy

@@ -6,18 +6,18 @@ class GroupMembershipsController < ApplicationController
 
   def show
     @users_groups = @user.stormpath_account.groups
-    @application_groups = StormpathConfig.application.groups
+    @application_groups = Stormpath::Rails.application.groups
   end
 
   def create
-    group = StormpathConfig.application.groups.get params[:group_href]
+    group = Stormpath::Rails.application.groups.get params[:group_href]
     account = @user.stormpath_account
-    StormpathConfig.client.group_memberships.create group: group, account: account
+    Stormpath::Rails.client.group_memberships.create group: group, account: account
     redirect_to action: :show
   end
 
   def destroy
-    group = StormpathConfig.application.groups.get params[:group_href]
+    group = Stormpath::Rails.application.groups.get params[:group_href]
     account = @user.stormpath_account
     account.group_memberships.each do |group_membership|
       group_membership.delete if group_membership.group.href == group.href

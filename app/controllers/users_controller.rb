@@ -12,21 +12,27 @@ class UsersController < ApplicationController
   end
 
   def create
-    stormpath_account = StormpathConfig.application.accounts.create({
-      given_name: params[:user][:given_name],
-      surname: params[:user][:surname],
-      email: params[:user][:email],
-      username: params[:user][:username],
-      password: params[:user][:password]
-    })
+    begin
+    # stormpath_account = Stormpath::Rails.application.accounts.create({
+    #   given_name: params[:user][:given_name],
+    #   surname: params[:user][:surname],
+    #   email: params[:user][:email],
+    #   username: params[:user][:username],
+    #   password: params[:user][:password]
+    # })
 
-    @user = User.new({ stormpath_url: stormpath_account.href})
-
-    flash[:message] = "Your account has been created. Depending on how you've configured your directory, you may need to check your email and verify the account before logging in."
-    redirect_to new_session_path
-  rescue Stormpath::Error => error
-    flash[:notice] = error.message
-    render :new
+      @user = User.new(user_params)
+      if @user.save
+        flash[:message] = "Your account has been created. Depending on how you've configured your directory, you may need to check your email and verify the account before logging in."
+        redirect_to new_session_path
+      else
+        flash[:notice] = @user.errors
+        render :new  
+      end
+    rescue Stormpath::Error => error
+      flash[:notice] = error.message
+      render :new
+    end
   end
 
   def edit
@@ -37,17 +43,23 @@ class UsersController < ApplicationController
   def update
     begin
       @user = User.find(params[:id])
-
-      account = @user.stormpath_account
-      account.given_name = params[:user][:given_name]
-      account.surname = params[:user][:surname]
-      account.username = params[:user][:username]
-      account.email = params[:user][:email]
-      account.custom_data[:favorite_color] = params[:user][:favorite_color]
-      account.save
-      
-      flash[:message] = "The account has been updated successfully."
-      redirect_to users_path
+      @user.update_attributes(user_params)
+      @user_groups = @user.stormpath_account.groups
+      # account = @user.stormpath_account
+      # account.given_name = params[:user][:given_name]
+      # account.surname = params[:user][:surname]
+      # account.username = params[:user][:username]
+      # account.email = params[:user][:email]
+      # account.custom_data[:favorite_color] = params[:user][:favorite_color]
+      # account.save
+      # binding.pry
+      if @user.save
+        flash[:message] = "The account has been updated successfully."
+        redirect_to users_path
+      else
+        flash[:notice] = @user.errors
+        render :new  
+      end
     rescue Stormpath::Error => e
       flash[:message] = e.message
       @user_groups = @user.stormpath_account.groups
@@ -58,7 +70,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     if @user != current_user
-      @user.stormpath_account.delete
+      # @user.stormpath_account.delete
       @user.destroy
     else
       flash[:message] = "You can not delete your own account!"
@@ -76,5 +88,11 @@ class UsersController < ApplicationController
 
     redirect_to new_session_path
   end
+
+  private
+
+    def user_params
+      params.require(:user).permit(:given_name, :surname, :username, :email, :favorite_color, :password)
+    end
 
 end
